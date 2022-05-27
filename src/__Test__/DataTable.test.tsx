@@ -1,14 +1,13 @@
 /* eslint-disable testing-library/no-unnecessary-act */
 
-import { act } from "@testing-library/react";
+import { act, screen } from "@testing-library/react";
 import axios from "axios"
 import DataTable from "../components/DataTable";
 import { mockData } from "../mockDataForTest/Mockdata"
 import { ContextType } from "../model/model";
-import { componentRenderByMemoryRouter, elementGetByTestId, elementGetBytext, toBeExpectByText } from "../utils/test";
+import { RenderingByMemoryRouter } from "./App.test";
 
-
-describe('test the post Component', ()=>{
+describe('testing the Data Table Component', ()=>{
     const handlePageChange = (
         event: React.ChangeEvent<unknown>,
         value: number
@@ -31,50 +30,50 @@ describe('test the post Component', ()=>{
         handleError: false
     }
 
-    test('should be post component', async()=>{
+    test('Rendering data table component', async()=>{
         await act(async()=>{
-            componentRenderByMemoryRouter('/',<DataTable data={contextValue} />)
+            RenderingByMemoryRouter('/',<DataTable data={contextValue} />)
         });
-        elementGetBytext('Data Table')
+        screen.getByText('Data Table');
     });
-    test('should render post list', async ()=>{
+    test('Rendering list', async ()=>{
         await act(async()=>{
-            componentRenderByMemoryRouter('/',<DataTable data={contextValue}/>)
+            RenderingByMemoryRouter('/',<DataTable data={contextValue}/>)
         });
-        elementGetByTestId('post-component-testid')
+        screen.getByTestId('post-component-testid')
     });
-    test('should render pagination', async()=>{
+    test('Rendering pagination', async()=>{
         await act(async()=>{
-            componentRenderByMemoryRouter('/',<DataTable data={contextValue}/>)
+            RenderingByMemoryRouter('/',<DataTable data={contextValue}/>)
         })
-        elementGetByTestId('pagination')
+        screen.getByTestId('pagination')
     });  
 
-    test('find post title', async()=>{
+    test('Finding data title', async()=>{
         await act(async()=>{
-            componentRenderByMemoryRouter('/',<DataTable data={contextValue}/>)
+            RenderingByMemoryRouter('/',<DataTable data={contextValue}/>)
         });
-        toBeExpectByText('Can GPT-3 AI rite comedy')
+        expect(screen.getByText('Can GPT-3 AI rite comedy')).toBeInTheDocument();
     });
-    test('find post url',async()=>{
+    test('Finding data url',async()=>{
         await act(async()=>{
-            componentRenderByMemoryRouter('/',<DataTable data={contextValue}/>)
+            RenderingByMemoryRouter('/',<DataTable data={contextValue}/>)
         })
-        toBeExpectByText('https://robmanuelfuckyeah.substack.com/p/someone-needs-to-stop-me-playing')
+        expect(screen.getByText('https://robmanuelfuckyeah.substack.com/p/someone-needs-to-stop-me-playing')).toBeInTheDocument();
     });
-    test('find post Author',async()=>{
+    test('Finding data Author',async()=>{
         await act(async()=>{
-            componentRenderByMemoryRouter('/',<DataTable data={contextValue}/>)
+            RenderingByMemoryRouter('/',<DataTable data={contextValue}/>)
         })
-        toBeExpectByText('rossver')
+        expect(screen.getByText('rossver')).toBeInTheDocument();
     });
-    test('find post created at',async()=>{
+    test('Finding data created at',async()=>{
         await act(async()=>{
-            componentRenderByMemoryRouter('/',<DataTable data={contextValue}/>)
+            RenderingByMemoryRouter('/',<DataTable data={contextValue}/>)
         })
-        toBeExpectByText('2022-02-12T12:10:12:000z')
+        expect(screen.getByText('2022-02-12T12:10:12:000z')).toBeInTheDocument();
     });
-    test('Api test', async()=>{
+    test('Api testing', async()=>{
         const res = await axios.get(
             `https://hn.algolia.com/api/v1/search_by_date?tags=story&page=${0}`
         );

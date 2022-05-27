@@ -1,11 +1,11 @@
 /* eslint-disable testing-library/no-unnecessary-act */
+import { screen } from "@testing-library/react";
 import {RowDetails} from "../components/RowDetails"
-import { componentRenderByMemoryRouter, toBeExpectByText } from "../utils/test"
+import { RenderingByMemoryRouter } from "./App.test";
 
-
-describe('Test Row details Component',()=>{
+describe('Testing Row details Component',()=>{
     test('should Render row details component',()=>{
-        componentRenderByMemoryRouter('/post-details/2/', <RowDetails />);
-        toBeExpectByText('Row Details')
+        RenderingByMemoryRouter('/post-details/2/', <RowDetails />);
+        expect(screen.getByText('Row Details')).toBeInTheDocument();
     })
 })

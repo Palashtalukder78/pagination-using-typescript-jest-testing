@@ -1,12 +1,23 @@
 /* eslint-disable testing-library/no-unnecessary-act */
-import { act } from "@testing-library/react"
+import { act, render, screen } from "@testing-library/react"
 import axios from "axios"
+import { ReactChild, ReactElement } from "react"
+import { MemoryRouter } from "react-router-dom"
 import App from "../App"
 import { mockData } from "../mockDataForTest/Mockdata"
-import { componentRenderByMemoryRouter, toBeExpectByTestId, toBeExpectByText} from "../utils/test"
 
+export const RenderingByMemoryRouter = async (
+    routingPath : string | '',
+    componentName: ReactElement | ReactChild
+)=>{
+    render(
+        <MemoryRouter initialEntries={[routingPath]}>
+            {componentName}
+        </MemoryRouter>
+    );
+};
 
-describe('test for app component', ()=>{
+describe('Testing app component', ()=>{
     beforeEach(()=>{
         jest.spyOn(axios,'get').mockResolvedValue({
             data:{
@@ -15,30 +26,31 @@ describe('test for app component', ()=>{
         })
     })
 
-    test('renders app component properly',async()=>{
+    test('Rendering app component properly',async()=>{
         await act(async()=>{
-            componentRenderByMemoryRouter('/',<App />)
+            RenderingByMemoryRouter('/',<App />)
         })
-        toBeExpectByTestId('app-component-testid')
+        expect(screen.getByTestId('app-component-testid')).toBeInTheDocument();
     });
 
-    test('should render home component',async()=>{
+    test('Rendering home component',async()=>{
         await act(async()=>{
-            componentRenderByMemoryRouter('/',<App />)
+            RenderingByMemoryRouter('/',<App />)
         });
-        toBeExpectByText('Data Table')
+        expect(screen.getByText('Data Table')).toBeInTheDocument();
     });
 
-    test('should render postDetails component', async()=>{
+    test('Rendering postDetails component', async()=>{
         await act(async()=>{
-            componentRenderByMemoryRouter('/post-details/2/',<App />)
+            RenderingByMemoryRouter('/post-details/2/',<App />)
         })
-        toBeExpectByText('Row Details')
+        expect(screen.getByText('Row Details')).toBeInTheDocument();
+
     });
-    test('should render 404 page', async()=>{
+    test('Rendering 404 page', async()=>{
         await act(async()=>{
-            componentRenderByMemoryRouter('/post-details/2/gsdsd',<App />);
+            RenderingByMemoryRouter('/post-details/2/gsdsd',<App />);
         });
-        toBeExpectByText('404 Not Found')
+        expect(screen.getByText('404 Not Found')).toBeInTheDocument();
     });
 })
