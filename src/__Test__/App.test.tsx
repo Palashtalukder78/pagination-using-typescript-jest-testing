@@ -1,23 +1,13 @@
 /* eslint-disable testing-library/no-unnecessary-act */
-import { act, render, screen } from "@testing-library/react"
-import axios from "axios"
-import { ReactChild, ReactElement } from "react"
-import { MemoryRouter } from "react-router-dom"
-import App from "../App"
-import { mockData } from "../mockDataForTest/Mockdata"
 
-export const RenderingByMemoryRouter = async (
-    routingPath : string | '',
-    componentName: ReactElement | ReactChild
-)=>{
-    render(
-        <MemoryRouter initialEntries={[routingPath]}>
-            {componentName}
-        </MemoryRouter>
-    );
-};
+import { act, render, screen } from "@testing-library/react";
+import axios from "axios";
+import {  Router } from "react-router-dom";
+import App from "../App";
+import {createMemoryHistory} from "history";
+import { mockData } from "../mockDataForTest/Mockdata";
 
-describe('Testing app component', ()=>{
+describe('Testing app component',()=>{
     beforeEach(()=>{
         jest.spyOn(axios,'get').mockResolvedValue({
             data:{
@@ -25,32 +15,51 @@ describe('Testing app component', ()=>{
             }
         })
     })
-
-    test('Rendering app component properly',async()=>{
+    test('Rendering App Component properly', async() => {
+        // eslint-disable-next-line
         await act(async()=>{
-            RenderingByMemoryRouter('/',<App />)
+            const history = createMemoryHistory();
+            history.push("/");
+            render(<Router location={history.location} navigator={history}>
+                <App />
+            </Router>);
         })
-        expect(screen.getByTestId('app-component-testid')).toBeInTheDocument();
-    });
-
-    test('Rendering home component',async()=>{
+        const appId1 = screen.getByTestId("app-component-testid");
+        expect(appId1).toBeInTheDocument();
+    }); 
+    test('Rendering Home Component', async() => {
+        // eslint-disable-next-line
         await act(async()=>{
-            RenderingByMemoryRouter('/',<App />)
-        });
-        expect(screen.getByText('Data Table')).toBeInTheDocument();
-    });
-
-    test('Rendering postDetails component', async()=>{
-        await act(async()=>{
-            RenderingByMemoryRouter('/post-details/2/',<App />)
+            const history = createMemoryHistory();
+            history.push("/");
+            render(<Router location={history.location} navigator={history}>
+                <App />
+            </Router>);
         })
-        expect(screen.getByText('Row Details')).toBeInTheDocument();
-
-    });
-    test('Rendering 404 page', async()=>{
+        const appId1 = screen.getByText("Data Table");
+        expect(appId1).toBeInTheDocument();
+    }); 
+    test('Rendering Post Details Component', async() => {
+        // eslint-disable-next-line
+       await act(async()=>{
+            const history = createMemoryHistory();
+            history.push("/post-details/2/");
+            render(<Router location={history.location} navigator={history}>
+                <App />
+            </Router>);
+       })
+        const appId1 = screen.getByText("Row Details");
+        expect(appId1).toBeInTheDocument();
+    }); 
+    test('rendering 404 not Page', async() => {
+        // eslint-disable-next-line
         await act(async()=>{
-            RenderingByMemoryRouter('/post-details/2/gsdsd',<App />);
-        });
+            const history = createMemoryHistory();
+            history.push("/post-details/2/asfsdgsg");
+            render(<Router location={history.location} navigator={history}>
+                <App />
+            </Router>);
+        })
         expect(screen.getByText('404 Not Found')).toBeInTheDocument();
-    });
+    }); 
 })
