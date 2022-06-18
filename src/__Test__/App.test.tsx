@@ -24,8 +24,8 @@ describe('Testing app component',()=>{
                 <App />
             </Router>);
         })
-        const appId1 = screen.getByTestId("app-component-testid");
-        expect(appId1).toBeInTheDocument();
+        const appId = screen.getByTestId("app-component-testid");
+        expect(appId).toBeInTheDocument();
     }); 
     test('Rendering Home Component', async() => {
         // eslint-disable-next-line
@@ -36,8 +36,8 @@ describe('Testing app component',()=>{
                 <App />
             </Router>);
         })
-        const appId1 = screen.getByText("Data Table");
-        expect(appId1).toBeInTheDocument();
+        const appText = screen.getByText("Data Table");
+        expect(appText).toBeInTheDocument();
     }); 
     test('Rendering Post Details Component', async() => {
         // eslint-disable-next-line
@@ -48,8 +48,8 @@ describe('Testing app component',()=>{
                 <App />
             </Router>);
        })
-        const appId1 = screen.getByText("Row Details");
-        expect(appId1).toBeInTheDocument();
+        const appText = screen.getByText("Row Details");
+        expect(appText).toBeInTheDocument();
     }); 
     test('rendering 404 not Page', async() => {
         // eslint-disable-next-line

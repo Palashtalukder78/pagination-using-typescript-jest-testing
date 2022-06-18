@@ -7,14 +7,11 @@ import { ContextType } from "../model/model"
 import {createMemoryHistory} from "history";
 import { Router } from "react-router-dom"
 import { mockData } from "../mockDataForTest/Mockdata";
-
-
 describe('Testing the Data Table Component',()=>{
     const handlePageChange = (
         event: React.ChangeEvent<unknown>,
         value:number
     )=>{}
-
     beforeEach(()=>{
         jest.spyOn(axios, 'get').mockResolvedValue({
             data:{
@@ -31,7 +28,6 @@ describe('Testing the Data Table Component',()=>{
         rowsPerPage: 20,
         handleError: false
     }
-
     test('Rendering Data Table component', async() => {
         // eslint-disable-next-line
         await act(async()=>{
@@ -78,7 +74,7 @@ describe('Testing the Data Table Component',()=>{
                 <DataTable data={contextValue} />
             </Router>);
         })
-        expect(screen.getByText('Can GPT-3 AI rite comedy')).toBeInTheDocument();
+        expect(screen.getByText('Still Beating the Averages')).toBeInTheDocument();
     }); 
     test('finding Data url', async() => {
         // eslint-disable-next-line
@@ -89,7 +85,7 @@ describe('Testing the Data Table Component',()=>{
                 <DataTable data={contextValue} />
             </Router>);
         })
-        expect(screen.getByText('https://robmanuelfuckyeah.substack.com/p/someone-needs-to-stop-me-playing')).toBeInTheDocument();
+        expect(screen.getByText('https://gaiwan.co/blog/still-beating-the-averages/')).toBeInTheDocument();
     }); 
     test('finding Data Author', async() => {
         // eslint-disable-next-line
@@ -100,7 +96,7 @@ describe('Testing the Data Table Component',()=>{
                 <DataTable data={contextValue} />
             </Router>);
         })
-        expect(screen.getByText('rossver')).toBeInTheDocument();
+        expect(screen.getByText('jballanc')).toBeInTheDocument();
     }); 
     test('finding Data created at', async() => {
         // eslint-disable-next-line
@@ -111,7 +107,7 @@ describe('Testing the Data Table Component',()=>{
                 <DataTable data={contextValue} />
             </Router>);
         })
-        expect(screen.getByText('2022-02-12T12:10:12:000Z')).toBeInTheDocument();
+        expect(screen.getByText('2022-06-09T13:29:16.000Z')).toBeInTheDocument();
     }); 
     test('api testing', async()=>{
         const res = await axios.get(`https://hn.algolia.com/api/v1/search_by_date?tags=story&page=${0}`);

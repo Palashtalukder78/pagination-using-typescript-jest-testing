@@ -3,7 +3,7 @@ import RowDetails from "../components/RowDetails"
 import {createMemoryHistory} from "history";
 import { Router } from "react-router-dom";
 
-describe('Testing Row Details Comp[onent',()=>{
+describe('Testing Row Details Component',()=>{
     test('should Render row details compomnent', async() => {
         // eslint-disable-next-line
         await act(async()=>{
